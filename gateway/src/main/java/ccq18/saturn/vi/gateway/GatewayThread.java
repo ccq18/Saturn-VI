@@ -18,10 +18,11 @@ public class GatewayThread implements Runnable {
     private Socket server ;
     private String host ;
 
-    public GatewayThread(String host, Socket client, Socket server) {
+    public GatewayThread(String host, Socket server,Socket client) {
         this.host = host;
-        this.client = client;
         this.server = server;
+        this.client = client;
+
     }
 
     @Override
@@ -29,11 +30,11 @@ public class GatewayThread implements Runnable {
 
         OutputStream out = null;
         try {
-//            client.getOutputStream().
             out = client.getOutputStream();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         try {
             InputStream is = client.getInputStream();
             //读取客户端request
