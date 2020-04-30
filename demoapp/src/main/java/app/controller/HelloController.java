@@ -24,21 +24,26 @@ public class HelloController {
         private String name;
     }
 
-    @RequestMapping(path = "/pickup-codes", method = {RequestMethod.GET})
+    @RequestMapping(path = "/hello", method = {RequestMethod.GET})
     public String handle(Request request) {
         return "<h1>hello</h1>\n" +
                 "<a href=\"/\">index</a>\n";
 
     }
 
-    @RequestMapping(path = "/", method = {RequestMethod.GET})
-    public Obj index(Request request) {
-        return new Obj("hello", "hi");
 
+
+    @RequestMapping(path = "/", method = {RequestMethod.GET})
+    public Response hello(Request request) {
+        return new Response(HttpStatus.OK, MediaType.TEXT_HTML_UTF8,
+                "<h1>首页</h1>\n" +
+                "<a href=\"/hello\">hello</a>\n"
+        );
     }
 
-    @RequestMapping(path = "/hello", method = {RequestMethod.GET})
-    public Response hello(Request request) {
-        return new Response(HttpStatus.OK, MediaType.TEXT_HTML_UTF8, "<h1>hello</h1>");
+    @RequestMapping(path = "/hi", method = {RequestMethod.GET})
+    public Obj index(Request request) {
+        return new Obj("hi", "hi");
+
     }
 }
