@@ -1,8 +1,8 @@
-package ccq18.saturn.vi.sever.handle;
+package ccq18.saturn.vi.sever;
 
 
 import ccq18.saturn.vi.model.Request;
 
-public interface ReqHandle {
+public interface RequestHandle {
     public String handle(Request request);
 }

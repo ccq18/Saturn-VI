@@ -9,16 +9,18 @@ import java.util.Map;
 public class Response {
     private String content;
     private HttpStatus httpStatus;
+    private String contentType;
 
-    public Response(HttpStatus httpStatus, String content) {
+    public Response(HttpStatus httpStatus, String contentType, String content) {
         this.httpStatus = httpStatus;
         this.content = content;
+        this.contentType = contentType;
     }
 
     public String[] getResp() {
         return new String[]{
-                "HTTP/1.1" + httpStatus.getValue() +""+ httpStatus.getReasonPhrase(),
-                "Content-Type: text/html; charset=utf-8",
+                "HTTP/1.1" + httpStatus.getValue() + "" + httpStatus.getReasonPhrase(),
+                "Content-Type: " + contentType,//text/html; charset=utf-8
                 "Content-Length: " + content.getBytes().length,
                 "",
                 content,

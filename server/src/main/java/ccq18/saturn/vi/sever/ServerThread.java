@@ -2,17 +2,19 @@ package ccq18.saturn.vi.sever;
 
 import ccq18.saturn.vi.HttpStatus;
 import ccq18.saturn.vi.HttpUtil;
+import ccq18.saturn.vi.MediaType;
 import ccq18.saturn.vi.model.Response;
-import ccq18.saturn.vi.sever.handle.HelloReq;
-import ccq18.saturn.vi.sever.handle.ReqDemo;
-import ccq18.saturn.vi.sever.handle.ReqHandle;
+import ccq18.saturn.vi.sever.annotation.RequestMapping;
+import ccq18.saturn.vi.sever.annotation.RequestMethod;
 import ccq18.saturn.vi.model.Request;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import ccq18.saturn.vi.sever.handle.NotFound;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Method;
 import java.net.Socket;
+import java.util.List;
 import java.util.regex.Pattern;
 
 // nc ip port
@@ -24,13 +26,19 @@ import java.util.regex.Pattern;
 public class ServerThread implements Runnable {
 
     private Socket client = null;
+    private List<UriHandle> uriHandles;
+    private UriHandle notfoundHandle;
 
-    public ServerThread(Socket client) {
+    public ServerThread(Socket client, List<UriHandle> uriHandles,UriHandle notfoundHandle) {
         this.client = client;
+        this.uriHandles = uriHandles;
+        this.notfoundHandle = notfoundHandle;
     }
 
     @Override
     public void run() {
+
+
         PrintStream out = null;
         try {
             out = new PrintStream(client.getOutputStream());
@@ -46,11 +54,22 @@ public class ServerThread implements Runnable {
             }
             Response response;
             try {
-                ReqHandle reqhandle = this.match(request);
-                String content = reqhandle.handle(request);
-                response =new Response(HttpStatus.OK, content);
+                UriHandle reqhandle = this.match(request);
+                log.info("reqhandle:{}", reqhandle);
+                Object content = reqhandle.getMethod().invoke(reqhandle.getClazz(), request);
+                if (content instanceof String) {
+                    response = new Response(HttpStatus.OK, MediaType.TEXT_HTML_UTF8, (String) content);
+                } else if (content instanceof Response) {
+                    response = (Response)content;
+                } else {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    String json = objectMapper.writeValueAsString(content);
+                    response = new Response(HttpStatus.OK, MediaType.APPLICATION_JSON_UTF8, json);
+                }
+
+
             } catch (Exception e) {
-                response =new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+                response = new Response(HttpStatus.INTERNAL_SERVER_ERROR, MediaType.TEXT_HTML_UTF8, e.getMessage());
                 log.info("error {}", e);
             }
             String[] resp = response.getResp();
@@ -73,13 +92,20 @@ public class ServerThread implements Runnable {
 
     }
 
-    public ReqHandle match(Request request) {
-        if (Pattern.matches("/hello", request.getUri())) {
-            return new HelloReq();
+    public UriHandle match(Request request)  {
+        for (UriHandle uriHandle : uriHandles) {
+            RequestMapping requestMapping = uriHandle.getMapping();
+            for (String path : requestMapping.path()) {
+                log.info("uri:{},path:{}", request.getUri(), path);
+                if (Pattern.matches(path, request.getUri())) {
+                    for (RequestMethod method : requestMapping.method()) {
+                        if (method.toString().equals(request.getMethod())) {
+                            return uriHandle;
+                        }
+                    }
+                }
+            }
         }
-        if (Pattern.matches("/", request.getUri())) {
-            return new ReqDemo();
-        }
-        return new NotFound();
+        return  this.notfoundHandle;
     }
 }

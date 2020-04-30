@@ -1,8 +1,9 @@
-package ccq18.saturn.vi.sever.handle;
+package app.controller;
 
 import ccq18.saturn.vi.model.Request;
+import ccq18.saturn.vi.sever.RequestHandle;
 
-public class NotFound implements ReqHandle {
+public class NotFound implements RequestHandle {
 
     @Override
     public String handle(Request request) {

@@ -66,9 +66,11 @@ public class GatewayThread implements Runnable {
         String reqContents = request.getContent();
 
         request.getHeaders().put("Host", host);
-//        todo 304 Not Modified
+
         request.getHeaders().remove("If-None-Match");
-//        todo 由于请求结束未关闭导致有一直被阻塞的问题
+        // todo 304 Not Modified  处理
+        //todo 由于请求结束未关闭导致有一直被阻塞的问题
+        //todo head 请求处理
         server.setSoTimeout(1000);
 
         OutputStream serverout = server.getOutputStream();
