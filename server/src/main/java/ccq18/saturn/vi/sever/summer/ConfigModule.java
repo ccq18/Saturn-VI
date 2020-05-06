@@ -1,4 +1,4 @@
-package ccq18.saturn.vi.sever;
+package ccq18.saturn.vi.sever.summer;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;

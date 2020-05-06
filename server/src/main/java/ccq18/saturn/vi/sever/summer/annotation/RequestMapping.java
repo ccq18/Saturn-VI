@@ -1,4 +1,6 @@
-package ccq18.saturn.vi.sever.annotation;
+package ccq18.saturn.vi.sever.summer.annotation;
+
+import ccq18.saturn.vi.sever.RequestMethod;
 
 import java.lang.annotation.*;
 

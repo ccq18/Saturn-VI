@@ -1,4 +1,4 @@
-package ccq18.saturn.vi.sever.annotation;
+package ccq18.saturn.vi.sever;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

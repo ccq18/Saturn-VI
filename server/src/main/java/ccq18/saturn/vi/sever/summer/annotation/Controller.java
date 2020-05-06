@@ -1,7 +1,4 @@
-package ccq18.saturn.vi.sever.annotation;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+package ccq18.saturn.vi.sever.summer.annotation;
 
 import java.lang.annotation.*;
 
