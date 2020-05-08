@@ -4,8 +4,9 @@ import ccq18.saturn.vi.HttpStatus;
 import ccq18.saturn.vi.MediaType;
 import ccq18.saturn.vi.model.Request;
 import ccq18.saturn.vi.model.Response;
-import ccq18.saturn.vi.sever.summer.annotation.Controller;
-import ccq18.saturn.vi.sever.summer.annotation.RequestMapping;
+import ccq18.saturn.vi.sever.framework.annotation.Controller;
+import ccq18.saturn.vi.sever.framework.annotation.GetMapping;
+import ccq18.saturn.vi.sever.framework.annotation.RequestMapping;
 import ccq18.saturn.vi.sever.RequestMethod;
 import com.google.inject.Singleton;
 import lombok.AllArgsConstructor;
@@ -24,8 +25,8 @@ public class HelloController {
         private String name;
     }
 
-    @RequestMapping(path = "/hello", method = {RequestMethod.GET})
-    public String handle(Request request) {
+    @GetMapping(path = "/hello")
+    public String hello(Request request) {
         return "<h1>hello</h1>\n" +
                 "<a href=\"/\">index</a>\n";
 
@@ -34,7 +35,7 @@ public class HelloController {
 
 
     @RequestMapping(path = "/", method = {RequestMethod.GET})
-    public Response hello(Request request) {
+    public Response index(Request request) {
         return new Response(HttpStatus.OK, MediaType.TEXT_HTML_UTF8,
                 "<h1>首页</h1>\n" +
                 "<a href=\"/hello\">hello</a>\n"
@@ -42,7 +43,7 @@ public class HelloController {
     }
 
     @RequestMapping(path = "/hi", method = {RequestMethod.GET})
-    public Obj index(Request request) {
+    public Obj hi(Request request) {
         return new Obj("hi", "hi");
 
     }

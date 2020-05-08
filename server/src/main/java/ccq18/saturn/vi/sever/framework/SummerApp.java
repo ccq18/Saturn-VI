@@ -1,4 +1,4 @@
-package ccq18.saturn.vi.sever.summer;
+package ccq18.saturn.vi.sever.framework;
 
 import ccq18.saturn.vi.reflect.ScanPackage;
 import ccq18.saturn.vi.reflect.ScanedClass;
@@ -6,8 +6,8 @@ import ccq18.saturn.vi.reflect.ScanedMethod;
 import ccq18.saturn.vi.sever.RequestHandle;
 import ccq18.saturn.vi.sever.Server;
 import ccq18.saturn.vi.sever.UriHandle;
-import ccq18.saturn.vi.sever.summer.annotation.Controller;
-import ccq18.saturn.vi.sever.summer.annotation.RequestMapping;
+import ccq18.saturn.vi.sever.framework.annotation.Controller;
+import ccq18.saturn.vi.sever.framework.annotation.RequestMapping;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +51,7 @@ public class SummerApp {
                 log.info("method:{}", scanedMethod.getMethod().getName());
                 RequestMapping mapping = (RequestMapping) scanedMethod.getAnnotation();
                 Method method = scanedMethod.getMethod();
-                log.info("{},{},path:{}", clazz, mapping.method(), mapping.path());
+                log.info("class:{},method:{},{},path:{}", clazz,method.getName(), mapping.method(), mapping.path());
                 uriHandles.add(new UriHandle(mapping, method, clazz));
 
             }

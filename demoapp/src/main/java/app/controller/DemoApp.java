@@ -1,7 +1,6 @@
 package app.controller;
 
-import ccq18.saturn.vi.sever.Server;
-import ccq18.saturn.vi.sever.summer.SummerApp;
+import ccq18.saturn.vi.sever.framework.SummerApp;
 
 public class DemoApp {
     public static void main(String[] args) throws Exception {

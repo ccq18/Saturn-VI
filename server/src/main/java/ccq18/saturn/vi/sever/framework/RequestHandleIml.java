@@ -1,10 +1,10 @@
-package ccq18.saturn.vi.sever.summer;
+package ccq18.saturn.vi.sever.framework;
 
 import ccq18.saturn.vi.model.Request;
 import ccq18.saturn.vi.sever.RequestHandle;
 import ccq18.saturn.vi.sever.RequestMethod;
 import ccq18.saturn.vi.sever.UriHandle;
-import ccq18.saturn.vi.sever.summer.annotation.RequestMapping;
+import ccq18.saturn.vi.sever.framework.annotation.RequestMapping;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationTargetException;

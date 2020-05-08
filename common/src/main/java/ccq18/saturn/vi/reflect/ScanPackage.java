@@ -2,10 +2,13 @@ package ccq18.saturn.vi.reflect;
 
 import com.google.common.reflect.ClassPath;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,6 +67,7 @@ public class ScanPackage {
         for (Method method : scanedClass.getMethods()) {
 
             Annotation anno = getAnnotion(method.getAnnotations(), annotation);
+            log.info("{},{}",method.getName(),anno);
             if (anno != null) {
                 methods.add(new ScanedMethod(method, anno));
             }
@@ -77,10 +81,29 @@ public class ScanPackage {
         for (Annotation anno : annotations) {
             if (anno.annotationType().equals(annotation)) {
                 return anno;
+            }else  if(anno.annotationType().isAnnotationPresent(annotation)){
+                Annotation anno1 = anno.annotationType().getAnnotation(annotation);
+
+                if (anno1!=null) {
+
+                    try {
+
+                        PropertyUtils.copyProperties(anno,anno1);
+                    } catch (Exception e) {
+
+                    }
+                    log.info("anno1:{},{}",anno,anno1.getClass().getDeclaredMethods());
+                    return anno1;
+                }
             }
+
+
         }
         return null;
     }
+
+
+
 
     public static Annotation getAnnotionByType(Class scanedClass, Class annotation) {
         return getAnnotion(scanedClass.getAnnotations(), annotation);

@@ -1,6 +1,6 @@
 package ccq18.saturn.vi.sever;
 
-import ccq18.saturn.vi.sever.summer.annotation.RequestMapping;
+import ccq18.saturn.vi.sever.framework.annotation.RequestMapping;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
